@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management - Categories</title>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a th:href="@{/books}">Books</a> |
+        <a th:href="@{/categories}">Categories</a> |
+        <a th:href="@{/borrows}">Borrow Records</a> |
+        <a th:href="@{/borrows/issue}">Issue Book</a> |
+        <a th:href="@{/users}">Users</a> |
+        <a th:href="@{/users/register}">Register</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Category Management</h2>
+
+    <!-- Flash Messages -->
+    <div th:if="${successMessage}">
+        <p style="color: green;" th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}">
+        <p style="color: red;" th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Add Category Form -->
+    <h3>Notun Category Jog Korun</h3>
+    <form th:action="@{/categories/save}" th:object="${categoryDto}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div>
+            <label>Category Name:</label><br>
+            <input type="text" th:field="*{name}" />
+            <span style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <br>
+
+        <div>
+            <label>Description:</label><br>
+            <textarea th:field="*{description}" rows="3" cols="30"></textarea>
+            <span style="color: red;" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+        </div>
+        <br>
+
+        <button type="submit">Save Category</button>
+    </form>
+
+    <hr>
+
+    <!-- Categories Table -->
+    <h3>Category List</h3>
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(categories)}">
+            <td colspan="3">Kono category paowa jayni.</td>
+        </tr>
+        <tr th:each="cat : ${categories}">
+            <td th:text="${cat.name}">Software Engineering</td>
+            <td th:text="${cat.description}">Programming related books</td>
+            <td>
+                <a th:href="@{/categories/delete/{id}(id=${cat.id})}"
+                   onclick="return confirm('Apni ki ei category-ti muche felte chan?');">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>

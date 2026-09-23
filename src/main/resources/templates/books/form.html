@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিদ্যান | নতুন গ্রন্থ সংযোজন</title>
+
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --biddan-red: #B22222;
+            --biddan-dark: #8B0000;
+            --biddan-white: #FFFFFF;
+            --biddan-bg: #FCFAFA;
+            --text-dark: #2C2A2A;
+            --text-muted: #6B6363;
+            --border-color: #EFE8E8;
+            --input-border: #D1D5DB;
+            --shadow-soft: 0 8px 30px rgba(178, 34, 34, 0.06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--biddan-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar Gradient & Navbar (Same as List Page) */
+        .top-strip { height: 5px; background: linear-gradient(90deg, var(--biddan-dark), var(--biddan-red)); }
+
+        header {
+            background-color: var(--biddan-white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand i { font-size: 28px; color: var(--biddan-red); }
+        .brand h1 { font-size: 24px; color: var(--biddan-dark); font-weight: 700; letter-spacing: 1px; }
+
+        nav { display: flex; gap: 8px; }
+        nav a {
+            text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 16px;
+            padding: 8px 15px; border-radius: 6px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+        }
+        nav a i { color: var(--text-muted); transition: color 0.3s ease; }
+        nav a:hover { background-color: rgba(178, 34, 34, 0.08); color: var(--biddan-red); }
+        nav a:hover i { color: var(--biddan-red); }
+
+        /* Main Container */
+        main {
+            max-width: 850px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: var(--biddan-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--biddan-red);
+        }
+
+        /* Form Card Design */
+        .form-card {
+            background: var(--biddan-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft);
+            padding: 40px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label i {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* Input Controls */
+        .form-control {
+            padding: 12px 16px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            background-color: #FAFAFA;
+            outline: none;
+        }
+
+        .form-control:focus {
+            background-color: var(--biddan-white);
+            border-color: var(--biddan-red);
+            box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.1);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Error Messages */
+        .error-text {
+            color: var(--biddan-red);
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: -4px;
+        }
+
+        .alert-error {
+            background-color: #FEF2F2;
+            color: #991B1B;
+            border-left: 4px solid var(--biddan-red);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            margin-top: 30px;
+            grid-column: 1 / -1;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--biddan-red), var(--biddan-dark));
+            color: var(--biddan-white);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(178, 34, 34, 0.3);
+        }
+
+        .btn-cancel {
+            background-color: #F3F4F6;
+            color: var(--text-dark);
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #E5E7EB;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
+            .btn-submit, .btn-cancel { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Cultural Accent Line -->
+<div class="top-strip"></div>
+
+<!-- Navigation Header -->
+<header>
+    <a th:href="@{/books}" class="brand">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <h1>বিদ্যান</h1>
+    </a>
+    <nav>
+        <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
+        <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
+        <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
+        <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
+        <a th:href="@{/users}"><i class="fa-solid fa-users"></i> Users</a>
+        <a th:href="@{/users/register}"><i class="fa-solid fa-user-plus"></i> Register</a>
+    </nav>
+</header>
+
+<main>
+    <div class="page-header">
+        <h2><i class="fa-solid fa-book-medical"></i> Notun Boi Jog Korun (Add Book)</h2>
+    </div>
+
+    <!-- Error Alert -->
+    <div th:if="${errorMessage}" class="alert-error">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-card">
+        <form th:action="@{/books/save}" th:object="${bookDto}" method="post" class="form-grid">
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Title Field -->
+            <div class="form-group">
+                <label><i class="fa-solid fa-heading"></i> Boi-er Nam (Title):</label>
+                <input type="text" class="form-control" th:field="*{title}" placeholder="Boi-er nam likhun..." />
+                <span class="error-text" th:if="${#fields.hasErrors('title')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{title}"></span>
+                </span>
+            </div>
+
+            <!-- Author Field -->
+            <div class="form-group">
+                <label><i class="fa-solid fa-pen-nib"></i> Lekhok (Author):</label>
+                <input type="text" class="form-control" th:field="*{author}" placeholder="Lekhoker nam likhun..." />
+                <span class="error-text" th:if="${#fields.hasErrors('author')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{author}"></span>
+                </span>
+            </div>
+
+            <!-- ISBN Field -->
+            <div class="form-group">
+                <label><i class="fa-solid fa-barcode"></i> ISBN No:</label>
+                <input type="text" class="form-control" th:field="*{isbn}" placeholder="10 ba 13 digit er ISBN..." />
+                <span class="error-text" th:if="${#fields.hasErrors('isbn')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{isbn}"></span>
+                </span>
+            </div>
+
+            <!-- Category Field -->
+            <div class="form-group">
+                <label><i class="fa-solid fa-list-check"></i> Category:</label>
+                <select class="form-control" th:field="*{categoryId}">
+                    <option value="">-- Category Select Korun --</option>
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.name}">
+                    </option>
+                </select>
+                <span class="error-text" th:if="${#fields.hasErrors('categoryId')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{categoryId}"></span>
+                </span>
+            </div>
+
+            <!-- Total Copies Field -->
+            <div class="form-group">
+                <label><i class="fa-solid fa-cubes"></i> Total Copies:</label>
+                <input type="number" class="form-control" th:field="*{totalCopies}" min="1" placeholder="Koiti copy ache?" />
+                <span class="error-text" th:if="${#fields.hasErrors('totalCopies')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{totalCopies}"></span>
+                </span>
+            </div>
+
+            <!-- Description Field (Full Width) -->
+            <div class="form-group full-width">
+                <label><i class="fa-solid fa-align-left"></i> Biboron (Description):</label>
+                <textarea class="form-control" th:field="*{description}" rows="4" placeholder="Boi-er kicho biboron ekhane likhun..."></textarea>
+                <span class="error-text" th:if="${#fields.hasErrors('description')}">
+                    <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{description}"></span>
+                </span>
+            </div>
+
+            <!-- Buttons -->
+            <div class="btn-group">
+                <a th:href="@{/books}" class="btn-cancel">
+                    <i class="fa-solid fa-xmark"></i> Cancel
+                </a>
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Book
+                </button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<!-- JavaScript for Alerts -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const errorAlert = document.querySelector('.alert-error');
+        if (errorAlert) {
+            setTimeout(() => {
+                errorAlert.style.opacity = '0';
+                errorAlert.style.transform = 'translateY(-10px)';
+                setTimeout(() => errorAlert.remove(), 600);
+            }, 5000);
+        }
+    });
+</script>
+
+</body>
+</html>

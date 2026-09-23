@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management - Borrow Records</title>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a th:href="@{/books}">Books</a> |
+        <a th:href="@{/categories}">Categories</a> |
+        <a th:href="@{/borrows}">Borrow Records</a> |
+        <a th:href="@{/borrows/issue}">Issue Book</a> |
+        <a th:href="@{/users}">Users</a> |
+        <a th:href="@{/users/register}">Register</a>
+    </nav>
+</header>
+
+<main>
+    <h2>Borrow Records (Dhar Neowa Boiyer Talika)</h2>
+
+    <!-- Flash Messages -->
+    <div th:if="${successMessage}">
+        <p style="color: green;" th:text="${successMessage}"></p>
+    </div>
+    <div th:if="${errorMessage}">
+        <p style="color: red;" th:text="${errorMessage}"></p>
+    </div>
+
+    <div>
+        <a th:href="@{/borrows/issue}">+ Notun Boi Issue Korun</a>
+    </div>
+
+    <br>
+
+    <!-- Borrow Records Table -->
+    <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+        <tr>
+            <th>User</th>
+            <th>Book</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Return Date</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(records)}">
+            <td colspan="7">Kono dharer record paowa jayni.</td>
+        </tr>
+        <tr th:each="rec : ${records}">
+            <td>
+                <strong th:text="${rec.userName}">Rakibul</strong><br>
+                <small th:text="${rec.userEmail}">rakib@mail.com</small>
+            </td>
+            <td>
+                <strong th:text="${rec.bookTitle}">Clean Architecture</strong><br>
+                <small>ISBN: <span th:text="${rec.bookIsbn}">978...</span></small>
+            </td>
+            <td th:text="${rec.borrowDate}">2026-09-23</td>
+            <td th:text="${rec.dueDate}">2026-10-07</td>
+            <td>
+                <span th:if="${rec.returnDate != null}" th:text="${rec.returnDate}">2026-09-25</span>
+                <span th:if="${rec.returnDate == null}" style="color: gray;">Not Returned</span>
+            </td>
+            <td>
+                <span th:text="${rec.status}">BORROWED</span>
+            </td>
+            <td>
+                <!-- Only show Return button if status is BORROWED -->
+                <form th:if="${rec.status.name() == 'BORROWED'}"
+                      th:action="@{/borrows/return/{id}(id=${rec.id})}"
+                      method="post"
+                      style="display:inline;">
+                    <button type="submit" onclick="return confirm('Boi ferot hishebe mark korte chan?');">
+                        Return Book
+                    </button>
+                </form>
+                <span th:if="${rec.status.name() == 'RETURNED'}" style="color: green;">Completed</span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
