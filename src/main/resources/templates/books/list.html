@@ -5,24 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বিদ্যান | গ্রন্থতালিকা</title>
 
-    <!-- Google Fonts: Hind Siliguri -->
+    <!-- Google Fonts: Hind Siliguri & Noto Serif Bengali -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --biddan-red: #B22222;       /* কালচারাল রক্তিম লাল */
-            --biddan-dark: #8B0000;      /* গাঢ় লাল */
-            --biddan-white: #FFFFFF;
-            --biddan-bg: #FCFAFA;        /* স্নিগ্ধ সাদা ব্যাকগ্রাউন্ড */
-            --text-dark: #2C2A2A;
-            --text-muted: #6B6363;
-            --border-color: #EFE8E8;
-            --shadow-soft: 0 4px 20px rgba(178, 34, 34, 0.08);
+            --biddan-crimson: #801313;
+            --biddan-terracotta: #A32828;
+            --biddan-gold: #D4AF37;
+            --biddan-parchment: #FBF8F3;
+            --card-surface: #FFFFFF;
+            --text-main: #241E1E;
+            --text-muted: #6E6666;
+            --border-soft: #EFE6D8;
+            --shadow-elevation: 0 12px 35px -8px rgba(128, 19, 19, 0.08);
+            --shadow-hover: 0 20px 40px -10px rgba(128, 19, 19, 0.16);
         }
 
         * {
@@ -33,24 +35,27 @@
         }
 
         body {
-            background-color: var(--biddan-bg);
-            color: var(--text-dark);
+            background-color: var(--biddan-parchment);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: radial-gradient(#E8DFD0 0.75px, transparent 0.75px);
+            background-size: 20px 20px;
         }
 
-        /* Top Bar Gradient */
-        .top-strip {
-            height: 5px;
-            background: linear-gradient(90deg, var(--biddan-dark), var(--biddan-red));
+        /* Cultural Top Strip */
+        .cultural-strip {
+            height: 6px;
+            background: linear-gradient(90deg, #4A0505, var(--biddan-crimson), var(--biddan-gold), var(--biddan-crimson), #4A0505);
         }
 
         /* Navbar Design */
         header {
-            background-color: var(--biddan-white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 14px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -59,248 +64,351 @@
             z-index: 100;
         }
 
-        .brand {
+        .brand-container {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
             text-decoration: none;
         }
 
-        .brand i {
-            font-size: 28px;
-            color: var(--biddan-red);
+        .brand-crest {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, var(--biddan-crimson), var(--biddan-terracotta));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--biddan-parchment);
+            font-size: 22px;
+            box-shadow: 0 4px 14px rgba(128, 19, 19, 0.25);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        .brand h1 {
-            font-size: 24px;
-            color: var(--biddan-dark);
-            font-weight: 700;
-            letter-spacing: 1px;
+        .brand-text h1 {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 26px;
+            color: var(--biddan-crimson);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
         }
 
         nav {
             display: flex;
-            gap: 8px;
+            align-items: center;
+            gap: 6px;
+            background: #F5EFEB;
+            padding: 5px;
+            border-radius: 12px;
         }
 
         nav a {
             text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 500;
-            font-size: 16px;
-            padding: 8px 15px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         nav a i {
             color: var(--text-muted);
-            transition: color 0.3s ease;
+            font-size: 13px;
         }
 
-        nav a:hover {
-            background-color: rgba(178, 34, 34, 0.08);
-            color: var(--biddan-red);
+        nav a.active, nav a:hover {
+            background-color: var(--card-surface);
+            color: var(--biddan-crimson);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
-        nav a:hover i {
-            color: var(--biddan-red);
+        nav a:hover i, nav a.active i {
+            color: var(--biddan-crimson);
         }
 
         /* Main Container */
         main {
-            max-width: 1200px;
+            max-width: 1280px;
             width: 100%;
-            margin: 40px auto;
-            padding: 0 20px;
+            margin: 36px auto;
+            padding: 0 32px;
             flex-grow: 1;
         }
 
-        .page-header {
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, #4A0505 0%, var(--biddan-crimson) 60%, var(--biddan-terracotta) 100%);
+            border-radius: 18px;
+            padding: 40px 48px;
+            color: #FFF;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-elevation);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        .page-header h2 {
-            font-size: 28px;
-            color: var(--biddan-dark);
+        .hero-banner::before {
+            content: "";
+            position: absolute;
+            right: -60px;
+            bottom: -60px;
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content h2 {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #FFF;
             display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-content p {
+            color: rgba(255, 255, 255, 0.82);
+            font-size: 15px;
+            max-width: 580px;
+            line-height: 1.6;
+        }
+
+        .btn-add-primary {
+            background: var(--biddan-gold);
+            color: #381A00;
+            text-decoration: none;
+            padding: 14px 26px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            display: inline-flex;
             align-items: center;
             gap: 10px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            z-index: 1;
         }
 
-        .btn-add {
-            background: linear-gradient(135deg, var(--biddan-red), var(--biddan-dark));
-            color: var(--biddan-white);
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-add:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(178, 34, 34, 0.3);
+        .btn-add-primary:hover {
+            transform: translateY(-3px);
+            background: #E5BE45;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
         /* Alerts */
         .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-weight: 500;
+            padding: 15px 24px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             transition: opacity 0.6s ease, transform 0.6s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .alert-success {
-            background-color: #F0FDF4;
-            color: #166534;
-            border-left: 4px solid #22C55E;
+        .alert-success { background-color: #F0FDF4; color: #166534; border-left: 4px solid #22C55E; }
+        .alert-error { background-color: #FEF2F2; color: #991B1B; border-left: 4px solid var(--biddan-red); }
+
+        /* Book Grid Layout */
+        .book-shelf-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 30px;
         }
 
-        .alert-error {
-            background-color: #FEF2F2;
-            color: #991B1B;
-            border-left: 4px solid var(--biddan-red);
-        }
-
-        /* Table Design */
-        .table-container {
-            background: var(--biddan-white);
-            border-radius: 12px;
-            box-shadow: var(--shadow-soft);
+        /* Book Card Design */
+        .book-card {
+            background: var(--card-surface);
+            border-radius: 14px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-elevation);
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--biddan-gold);
         }
 
-        thead {
-            background-color: #FFF5F5;
-            border-bottom: 2px solid var(--biddan-red);
+        .book-card-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            background: linear-gradient(to bottom, var(--biddan-crimson), var(--biddan-gold));
         }
 
-        th {
-            text-align: left;
-            padding: 18px 20px;
-            color: var(--biddan-dark);
+        .book-details {
+            padding: 24px 24px 20px 28px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .category-tag {
+            align-self: flex-start;
+            background: rgba(128, 19, 19, 0.06);
+            color: var(--biddan-crimson);
+            border: 1px solid rgba(128, 19, 19, 0.12);
+            font-size: 12px;
             font-weight: 700;
-            font-size: 16px;
-        }
-
-        td {
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-dark);
-            vertical-align: middle;
-        }
-
-        tbody tr {
-            transition: background-color 0.2s ease;
-        }
-
-        tbody tr:hover {
-            background-color: rgba(178, 34, 34, 0.03);
-        }
-
-        /* Badges & Text styles */
-        .category-badge {
-            background-color: rgba(178, 34, 34, 0.08);
-            color: var(--biddan-red);
             padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            display: inline-block;
+            border-radius: 6px;
+            margin-bottom: 14px;
+            letter-spacing: 0.3px;
         }
 
-        .stock-ok {
-            color: #166534;
-            font-weight: 600;
+        .book-title {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 20px;
+            color: var(--text-main);
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .book-author {
+            color: var(--text-muted);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .book-author i {
+            color: var(--biddan-terracotta);
+            font-size: 13px;
+        }
+
+        .meta-info {
+            background: var(--biddan-parchment);
+            border-radius: 8px;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            margin-top: auto;
+            border: 1px solid #EADBCE;
+        }
+
+        .isbn-text {
+            color: var(--text-muted);
+            font-family: monospace;
+            font-size: 13px;
+        }
+
+        .stock-indicator {
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .stock-out {
-            color: var(--biddan-red);
-            font-weight: 600;
-            background: #FEF2F2;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            display: inline-flex;
+        .stock-available { color: #1B7A38; }
+        .stock-empty { color: #A32828; }
+
+        /* Card Actions */
+        .card-actions {
+            border-top: 1px solid var(--border-soft);
+            padding: 12px 24px 12px 28px;
+            background: #FCFAF8;
+            display: flex;
+            justify-content: flex-end;
             align-items: center;
-            gap: 4px;
         }
 
-        /* Action Button */
-        .btn-delete {
-            color: var(--text-muted);
-            text-decoration: none;
-            padding: 8px 14px;
-            border: 1px solid var(--border-color);
+        .btn-delete-subtle {
+            background: transparent;
+            border: none;
+            color: #A32828;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
             border-radius: 6px;
             transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            font-weight: 500;
+            text-decoration: none;
         }
 
-        .btn-delete:hover {
-            background-color: var(--biddan-red);
-            color: var(--biddan-white);
-            border-color: var(--biddan-red);
+        .btn-delete-subtle:hover {
+            background: rgba(163, 40, 40, 0.1);
+            color: #741010;
         }
 
         /* Empty State */
-        .empty-state {
+        .empty-shelf {
+            grid-column: 1 / -1;
+            background: var(--card-surface);
+            border-radius: 16px;
+            border: 2px dashed var(--border-soft);
+            padding: 70px 20px;
             text-align: center;
-            padding: 60px 20px;
+        }
+
+        .empty-shelf i {
+            font-size: 54px;
+            color: #DACDBE;
+            margin-bottom: 16px;
+        }
+
+        .empty-shelf p {
             color: var(--text-muted);
+            font-size: 18px;
+            font-weight: 500;
         }
-
-        .empty-state i {
-            font-size: 48px;
-            color: var(--border-color);
-            margin-bottom: 15px;
-        }
-
     </style>
 </head>
 <body>
 
-<!-- Cultural Accent Line -->
-<div class="top-strip"></div>
+<div class="cultural-strip"></div>
 
-<!-- Navigation Header -->
 <header>
-    <a th:href="@{/books}" class="brand">
-        <i class="fa-solid fa-book-open-reader"></i>
-        <h1>বিদ্যান</h1>
+    <a th:href="@{/books}" class="brand-container">
+        <div class="brand-crest">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="brand-text">
+            <h1>বিদ্যান</h1>
+            <span>জ্ঞানতীর্থ পাঠাগার</span>
+        </div>
     </a>
     <nav>
-        <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
+        <a th:href="@{/books}" class="active"><i class="fa-solid fa-swatchbook"></i> Books</a>
         <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
         <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
         <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
@@ -310,10 +418,14 @@
 </header>
 
 <main>
-    <div class="page-header">
-        <h2><i class="fa-solid fa-list-ol"></i> Boiyer Talika (Books List)</h2>
-        <a th:href="@{/books/new}" class="btn-add">
-            <i class="fa-solid fa-plus"></i> Notun Boi Jog Korun
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h2><i class="fa-solid fa-feather-pointed"></i> সংরক্ষিত গ্রন্থসম্ভার</h2>
+            <p>জ্ঞানের প্রদীপে উদ্ভাসিত হোক প্রতিটি মন। পাঠাগারের প্রতিটি গ্রন্থ এক একটি অনন্ত যাত্রার সূচনা।</p>
+        </div>
+        <a th:href="@{/books/new}" class="btn-add-primary">
+            <i class="fa-solid fa-circle-plus"></i> Notun Boi Jog Korun
         </a>
     </div>
 
@@ -327,62 +439,52 @@
         <span th:text="${errorMessage}"></span>
     </div>
 
-    <!-- Books Table -->
-    <div class="table-container">
-        <table>
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>ISBN</th>
-                <th>Category</th>
-                <th>Stock (Available / Total)</th>
-                <th style="text-align: right;">Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${#lists.isEmpty(books)}">
-                <td colspan="6">
-                    <div class="empty-state">
-                        <i class="fa-solid fa-folder-open"></i>
-                        <p>Kono boi paowa jayni. Notun boi jog korun!</p>
-                    </div>
-                </td>
-            </tr>
-            <tr th:each="book : ${books}">
-                <td>
-                    <strong style="color: var(--biddan-dark); font-size: 17px;" th:text="${book.title}">Clean Architecture</strong>
-                </td>
-                <td>
-                    <i class="fa-solid fa-feather-pointed" style="color: var(--text-muted); font-size: 12px; margin-right: 5px;"></i>
+    <!-- Book Grid -->
+    <div class="book-shelf-grid">
+        <!-- Empty State -->
+        <div th:if="${#lists.isEmpty(books)}" class="empty-shelf">
+            <i class="fa-solid fa-book-journal-whills"></i>
+            <p>Kono boi paowa jayni. Notun boi jog korun!</p>
+        </div>
+
+        <!-- Book Cards -->
+        <div class="book-card" th:each="book : ${books}">
+            <div class="book-card-spine"></div>
+            
+            <div class="book-details">
+                <span class="category-tag" th:text="${book.category != null ? book.category.name : 'N/A'}">Programming</span>
+                <h4 class="book-title" th:text="${book.title}">Clean Architecture</h4>
+                <div class="book-author">
+                    <i class="fa-solid fa-pen-nib"></i>
                     <span th:text="${book.author}">Robert C. Martin</span>
-                </td>
-                <td style="font-family: monospace; font-size: 15px;" th:text="${book.isbn}">9780134494166</td>
-                <td>
-                    <span class="category-badge" th:text="${book.category != null ? book.category.name : 'N/A'}">Programming</span>
-                </td>
-                <td>
-                    <div class="stock-ok" th:if="${book.availableCopies > 0}">
-                        <i class="fa-solid fa-check-circle"></i>
+                </div>
+                
+                <div class="meta-info">
+                    <span class="isbn-text"><i class="fa-solid fa-barcode"></i> <span th:text="${book.isbn}">9780134494166</span></span>
+                    
+                    <span class="stock-indicator stock-available" th:if="${book.availableCopies > 0}">
+                        <i class="fa-solid fa-circle-check"></i>
                         <span th:text="${book.availableCopies} + ' / ' + ${book.totalCopies}">5 / 5</span>
-                    </div>
-                    <div class="stock-out" th:if="${book.availableCopies == 0}">
-                        <i class="fa-solid fa-circle-xmark"></i> (Out of Stock)
-                    </div>
-                </td>
-                <td style="text-align: right;">
-                    <a class="btn-delete" th:href="@{/books/delete/{id}(id=${book.id})}"
-                       onclick="return confirm('Apni ki ei boiti muche felte chan?');">
-                        <i class="fa-solid fa-trash-can"></i> Delete
-                    </a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </span>
+                    
+                    <span class="stock-indicator stock-empty" th:if="${book.availableCopies == 0}">
+                        <i class="fa-solid fa-circle-xmark"></i> Out of Stock
+                    </span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <a class="btn-delete-subtle" 
+                   th:href="@{/books/delete/{id}(id=${book.id})}" 
+                   onclick="return confirm('Apni ki ei boiti muche felte chan?');">
+                    <i class="fa-solid fa-trash-can"></i> Delete
+                </a>
+            </div>
+        </div>
     </div>
 </main>
 
-<!-- Vanilla JavaScript for Auto-hiding Alerts -->
+<!-- Auto-hiding Alerts -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const alerts = document.querySelectorAll('.alert');
