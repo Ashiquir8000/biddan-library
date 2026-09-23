@@ -3,81 +3,378 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management - Categories</title>
+    <title>বিদ্যান | ক্যাটাগরি ব্যবস্থাপনা</title>
+    
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --biddan-red: #B22222;
+            --biddan-dark: #8B0000;
+            --biddan-white: #FFFFFF;
+            --biddan-bg: #FCFAFA;
+            --text-dark: #2C2A2A;
+            --text-muted: #6B6363;
+            --border-color: #EFE8E8;
+            --input-border: #D1D5DB;
+            --shadow-soft: 0 4px 20px rgba(178, 34, 34, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--biddan-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar Gradient & Navbar */
+        .top-strip { height: 5px; background: linear-gradient(90deg, var(--biddan-dark), var(--biddan-red)); }
+        
+        header {
+            background-color: var(--biddan-white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand i { font-size: 28px; color: var(--biddan-red); }
+        .brand h1 { font-size: 24px; color: var(--biddan-dark); font-weight: 700; letter-spacing: 1px; }
+
+        nav { display: flex; gap: 8px; }
+        nav a {
+            text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 16px;
+            padding: 8px 15px; border-radius: 6px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+        }
+        nav a i { color: var(--text-muted); transition: color 0.3s ease; }
+        nav a:hover { background-color: rgba(178, 34, 34, 0.08); color: var(--biddan-red); }
+        nav a:hover i { color: var(--biddan-red); }
+
+        /* Main Container */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: var(--biddan-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .alert-success { background-color: #F0FDF4; color: #166534; border-left: 4px solid #22C55E; }
+        .alert-error { background-color: #FEF2F2; color: #991B1B; border-left: 4px solid var(--biddan-red); }
+
+        /* Two Column Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
+            .content-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Card Wrapper */
+        .card {
+            background: var(--biddan-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            color: var(--biddan-dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1.5px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        /* Form Controls */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label i { color: var(--text-muted); font-size: 13px; }
+
+        .form-control {
+            padding: 10px 14px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--text-dark);
+            background-color: #FAFAFA;
+            outline: none;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: var(--biddan-white);
+            border-color: var(--biddan-red);
+            box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.1);
+        }
+
+        textarea.form-control { resize: vertical; min-height: 90px; }
+
+        .error-text {
+            color: var(--biddan-red);
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--biddan-red), var(--biddan-dark));
+            color: var(--biddan-white);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(178, 34, 34, 0.3);
+        }
+
+        /* Table Design */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead { background-color: #FFF5F5; border-bottom: 2px solid var(--biddan-red); }
+        th { text-align: left; padding: 15px; color: var(--biddan-dark); font-weight: 700; font-size: 15px; }
+        td { padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-dark); vertical-align: middle; }
+        tbody tr { transition: background-color 0.2s ease; }
+        tbody tr:hover { background-color: rgba(178, 34, 34, 0.03); }
+
+        .cat-name { font-weight: 700; color: var(--biddan-dark); font-size: 16px; }
+        .cat-desc { font-size: 14px; color: var(--text-muted); }
+
+        .btn-delete {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-delete:hover {
+            background-color: var(--biddan-red);
+            color: var(--biddan-white);
+            border-color: var(--biddan-red);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state i { font-size: 40px; color: var(--border-color); margin-bottom: 10px; }
+    </style>
 </head>
 <body>
 
+<!-- Cultural Accent Line -->
+<div class="top-strip"></div>
+
+<!-- Navigation Header -->
 <header>
+    <a th:href="@{/books}" class="brand">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <h1>বিদ্যান</h1>
+    </a>
     <nav>
-        <a th:href="@{/books}">Books</a> |
-        <a th:href="@{/categories}">Categories</a> |
-        <a th:href="@{/borrows}">Borrow Records</a> |
-        <a th:href="@{/borrows/issue}">Issue Book</a> |
-        <a th:href="@{/users}">Users</a> |
-        <a th:href="@{/users/register}">Register</a>
+        <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
+        <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
+        <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
+        <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
+        <a th:href="@{/users}"><i class="fa-solid fa-users"></i> Users</a>
+        <a th:href="@{/users/register}"><i class="fa-solid fa-user-plus"></i> Register</a>
     </nav>
 </header>
 
 <main>
-    <h2>Category Management</h2>
+    <div class="page-header">
+        <h2><i class="fa-solid fa-layer-group"></i> Category Management</h2>
+    </div>
 
     <!-- Flash Messages -->
-    <div th:if="${successMessage}">
-        <p style="color: green;" th:text="${successMessage}"></p>
+    <div th:if="${successMessage}" class="alert alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span th:text="${successMessage}"></span>
     </div>
-    <div th:if="${errorMessage}">
-        <p style="color: red;" th:text="${errorMessage}"></p>
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span th:text="${errorMessage}"></span>
     </div>
 
-    <!-- Add Category Form -->
-    <h3>Notun Category Jog Korun</h3>
-    <form th:action="@{/categories/save}" th:object="${categoryDto}" method="post">
-        <input type="hidden" th:field="*{id}" />
+    <div class="content-grid">
+        <!-- Add Category Form Card -->
+        <div class="card">
+            <h3><i class="fa-solid fa-plus-circle"></i> Notun Category Jog Korun</h3>
+            <form th:action="@{/categories/save}" th:object="${categoryDto}" method="post">
+                <input type="hidden" th:field="*{id}" />
 
-        <div>
-            <label>Category Name:</label><br>
-            <input type="text" th:field="*{name}" />
-            <span style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                <div class="form-group">
+                    <label><i class="fa-solid fa-tag"></i> Category Name:</label>
+                    <input type="text" class="form-control" th:field="*{name}" placeholder="Category nam likhun..." />
+                    <span class="error-text" th:if="${#fields.hasErrors('name')}">
+                        <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{name}"></span>
+                    </span>
+                </div>
+
+                <div class="form-group">
+                    <label><i class="fa-solid fa-align-left"></i> Description:</label>
+                    <textarea class="form-control" th:field="*{description}" rows="3" placeholder="Category-er biboron..."></textarea>
+                    <span class="error-text" th:if="${#fields.hasErrors('description')}">
+                        <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{description}"></span>
+                    </span>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Category
+                </button>
+            </form>
         </div>
-        <br>
 
-        <div>
-            <label>Description:</label><br>
-            <textarea th:field="*{description}" rows="3" cols="30"></textarea>
-            <span style="color: red;" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+        <!-- Categories Table Card -->
+        <div class="card">
+            <h3><i class="fa-solid fa-list"></i> Category List</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:if="${#lists.isEmpty(categories)}">
+                        <td colspan="3">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <p>Kono category paowa jayni.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr th:each="cat : ${categories}">
+                        <td>
+                            <span class="cat-name" th:text="${cat.name}">Software Engineering</span>
+                        </td>
+                        <td>
+                            <span class="cat-desc" th:text="${cat.description}">Programming related books</span>
+                        </td>
+                        <td style="text-align: right;">
+                            <a class="btn-delete" th:href="@{/categories/delete/{id}(id=${cat.id})}"
+                               onclick="return confirm('Apni ki ei category-ti muche felte chan?');">
+                                <i class="fa-solid fa-trash-can"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <br>
-
-        <button type="submit">Save Category</button>
-    </form>
-
-    <hr>
-
-    <!-- Categories Table -->
-    <h3>Category List</h3>
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${#lists.isEmpty(categories)}">
-            <td colspan="3">Kono category paowa jayni.</td>
-        </tr>
-        <tr th:each="cat : ${categories}">
-            <td th:text="${cat.name}">Software Engineering</td>
-            <td th:text="${cat.description}">Programming related books</td>
-            <td>
-                <a th:href="@{/categories/delete/{id}(id=${cat.id})}"
-                   onclick="return confirm('Apni ki ei category-ti muche felte chan?');">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    </div>
 </main>
+
+<!-- Vanilla JavaScript for Auto-hiding Alerts -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 600);
+            }, 4000);
+        });
+    });
+</script>
 
 </body>
 </html>
