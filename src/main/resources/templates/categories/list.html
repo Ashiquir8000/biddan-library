@@ -3,27 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>বিদ্যান | ক্যাটাগরি ব্যবস্থাপনা</title>
+    <title>বিদ্যান | বিষয়শ্রেণী ও জ্ঞানশাখা</title>
     
-    <!-- Google Fonts: Hind Siliguri -->
+    <!-- Google Fonts: Hind Siliguri & Noto Serif Bengali -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&display=swap" rel="stylesheet">
     
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
         :root {
-            --biddan-red: #B22222;
-            --biddan-dark: #8B0000;
-            --biddan-white: #FFFFFF;
-            --biddan-bg: #FCFAFA;
-            --text-dark: #2C2A2A;
-            --text-muted: #6B6363;
-            --border-color: #EFE8E8;
-            --input-border: #D1D5DB;
-            --shadow-soft: 0 4px 20px rgba(178, 34, 34, 0.08);
+            --biddan-crimson: #801313;
+            --biddan-terracotta: #A32828;
+            --biddan-gold: #D4AF37;
+            --biddan-parchment: #FBF8F3;
+            --card-surface: #FFFFFF;
+            --text-main: #241E1E;
+            --text-muted: #6E6666;
+            --border-soft: #EFE6D8;
+            --input-border: #D8CEBE;
+            --shadow-elevation: 0 12px 35px -8px rgba(128, 19, 19, 0.08);
+            --shadow-hover: 0 18px 36px -10px rgba(128, 19, 19, 0.14);
         }
 
         * {
@@ -34,20 +36,27 @@
         }
 
         body {
-            background-color: var(--biddan-bg);
-            color: var(--text-dark);
+            background-color: var(--biddan-parchment);
+            color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background-image: radial-gradient(#E8DFD0 0.75px, transparent 0.75px);
+            background-size: 20px 20px;
         }
 
-        /* Top Bar Gradient & Navbar */
-        .top-strip { height: 5px; background: linear-gradient(90deg, var(--biddan-dark), var(--biddan-red)); }
-        
+        /* সাংস্কৃতিক আলপনা স্ট্রিপ */
+        .cultural-strip {
+            height: 6px;
+            background: linear-gradient(90deg, #4A0505, var(--biddan-crimson), var(--biddan-gold), var(--biddan-crimson), #4A0505);
+        }
+
+        /* হেডার ও নেভিগেশন */
         header {
-            background-color: var(--biddan-white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 14px 48px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -56,90 +65,187 @@
             z-index: 100;
         }
 
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-        .brand i { font-size: 28px; color: var(--biddan-red); }
-        .brand h1 { font-size: 24px; color: var(--biddan-dark); font-weight: 700; letter-spacing: 1px; }
-
-        nav { display: flex; gap: 8px; }
-        nav a {
-            text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 16px;
-            padding: 8px 15px; border-radius: 6px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
-        }
-        nav a i { color: var(--text-muted); transition: color 0.3s ease; }
-        nav a:hover { background-color: rgba(178, 34, 34, 0.08); color: var(--biddan-red); }
-        nav a:hover i { color: var(--biddan-red); }
-
-        /* Main Container */
-        main {
-            max-width: 1200px;
-            width: 100%;
-            margin: 40px auto;
-            padding: 0 20px;
-            flex-grow: 1;
-        }
-
-        .page-header {
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 15px;
-        }
-
-        .page-header h2 {
-            font-size: 28px;
-            color: var(--biddan-dark);
+        .brand-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 16px;
+            text-decoration: none;
         }
 
-        /* Alerts */
-        .alert {
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .alert-success { background-color: #F0FDF4; color: #166534; border-left: 4px solid #22C55E; }
-        .alert-error { background-color: #FEF2F2; color: #991B1B; border-left: 4px solid var(--biddan-red); }
-
-        /* Two Column Layout */
-        .content-grid {
-            display: grid;
-            grid-template-columns: 380px 1fr;
-            gap: 30px;
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .content-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Card Wrapper */
-        .card {
-            background: var(--biddan-white);
+        .brand-crest {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, var(--biddan-crimson), var(--biddan-terracotta));
             border-radius: 12px;
-            box-shadow: var(--shadow-soft);
-            padding: 30px;
-            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--biddan-parchment);
+            font-size: 22px;
+            box-shadow: 0 4px 14px rgba(128, 19, 19, 0.25);
+            border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        .card h3 {
-            font-size: 20px;
-            color: var(--biddan-dark);
-            margin-bottom: 20px;
+        .brand-text h1 {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 26px;
+            color: var(--biddan-crimson);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.1;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            font-weight: 600;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #F5EFEB;
+            padding: 5px;
+            border-radius: 12px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 8px;
-            border-bottom: 1.5px solid var(--border-color);
-            padding-bottom: 10px;
         }
 
-        /* Form Controls */
+        nav a i {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        nav a.active, nav a:hover {
+            background-color: var(--card-surface);
+            color: var(--biddan-crimson);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        nav a:hover i, nav a.active i {
+            color: var(--biddan-crimson);
+        }
+
+        /* মূল কনটেন্ট এরিয়া */
+        main {
+            max-width: 1280px;
+            width: 100%;
+            margin: 36px auto;
+            padding: 0 32px;
+            flex-grow: 1;
+        }
+
+        /* ব্যানার */
+        .hero-banner {
+            background: linear-gradient(135deg, #4A0505 0%, var(--biddan-crimson) 60%, var(--biddan-terracotta) 100%);
+            border-radius: 18px;
+            padding: 36px 44px;
+            color: #FFF;
+            margin-bottom: 36px;
+            box-shadow: var(--shadow-elevation);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .hero-banner::before {
+            content: "";
+            position: absolute;
+            right: -50px;
+            bottom: -50px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content h2 {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-content p {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 15px;
+            max-width: 650px;
+            line-height: 1.6;
+        }
+
+        /* নোটিফিকেশন অ্যালার্ট */
+        .alert {
+            padding: 14px 22px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .alert-success { background-color: #F0FDF4; color: #166534; border-left: 4px solid #22C55E; }
+        .alert-error { background-color: #FEF2F2; color: #991B1B; border-left: 4px solid var(--biddan-crimson); }
+
+        /* প্রধান গ্রিড লেআউট */
+        .layout-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 32px;
+            align-items: start;
+        }
+
+        @media (max-width: 960px) {
+            .layout-grid { grid-template-columns: 1fr; }
+        }
+
+        /* কার্ড বক্স */
+        .biddan-card {
+            background: var(--card-surface);
+            border-radius: 16px;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--shadow-elevation);
+            padding: 30px;
+            position: relative;
+        }
+
+        .card-header-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            margin-bottom: 22px;
+            border-bottom: 1.5px solid var(--border-soft);
+        }
+
+        .card-header-line h3 {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 20px;
+            color: var(--biddan-crimson);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* ফর্ম উপাদান */
         .form-group {
             display: flex;
             flex-direction: column;
@@ -149,125 +255,177 @@
 
         label {
             font-weight: 600;
-            color: var(--text-dark);
+            color: var(--text-main);
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
-        label i { color: var(--text-muted); font-size: 13px; }
+        label i { color: var(--biddan-terracotta); font-size: 13px; }
 
-        .form-control {
-            padding: 10px 14px;
+        .form-input {
+            padding: 12px 16px;
             border: 1.5px solid var(--input-border);
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 15px;
-            color: var(--text-dark);
-            background-color: #FAFAFA;
+            color: var(--text-main);
+            background-color: var(--biddan-parchment);
             outline: none;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
         }
 
-        .form-control:focus {
-            background-color: var(--biddan-white);
-            border-color: var(--biddan-red);
-            box-shadow: 0 0 0 4px rgba(178, 34, 34, 0.1);
+        .form-input:focus {
+            background-color: #FFFFFF;
+            border-color: var(--biddan-crimson);
+            box-shadow: 0 0 0 4px rgba(128, 19, 19, 0.08);
         }
 
-        textarea.form-control { resize: vertical; min-height: 90px; }
+        textarea.form-input { resize: vertical; min-height: 100px; }
 
-        .error-text {
-            color: var(--biddan-red);
-            font-size: 12px;
-            font-weight: 500;
+        .error-msg {
+            color: var(--biddan-crimson);
+            font-size: 13px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             margin-top: 4px;
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, var(--biddan-red), var(--biddan-dark));
-            color: var(--biddan-white);
+        .btn-submit-gold {
+            background: linear-gradient(135deg, var(--biddan-crimson), var(--biddan-terracotta));
+            color: #FFFFFF;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-weight: 700;
             font-size: 15px;
             cursor: pointer;
             width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.2);
-            transition: transform 0.2s, box-shadow 0.2s;
+            gap: 10px;
+            box-shadow: 0 4px 14px rgba(128, 19, 19, 0.25);
+            transition: all 0.25s ease;
+            margin-top: 10px;
         }
 
-        .btn-submit:hover {
+        .btn-submit-gold:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(178, 34, 34, 0.3);
+            box-shadow: 0 6px 18px rgba(128, 19, 19, 0.35);
         }
 
-        /* Table Design */
-        .table-container {
-            overflow-x: auto;
+        /* ক্যাটাগরি আইটেম গ্রিড (টেবিল বর্জন করে কার্ড ভিউ) */
+        .category-items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 18px;
         }
 
-        table { width: 100%; border-collapse: collapse; }
-        thead { background-color: #FFF5F5; border-bottom: 2px solid var(--biddan-red); }
-        th { text-align: left; padding: 15px; color: var(--biddan-dark); font-weight: 700; font-size: 15px; }
-        td { padding: 15px; border-bottom: 1px solid var(--border-color); color: var(--text-dark); vertical-align: middle; }
-        tbody tr { transition: background-color 0.2s ease; }
-        tbody tr:hover { background-color: rgba(178, 34, 34, 0.03); }
+        .category-brick {
+            background: var(--card-surface);
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
 
-        .cat-name { font-weight: 700; color: var(--biddan-dark); font-size: 16px; }
-        .cat-desc { font-size: 14px; color: var(--text-muted); }
+        .category-brick:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--biddan-gold);
+        }
 
-        .btn-delete {
+        .brick-spine {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--biddan-crimson), var(--biddan-gold));
+            border-radius: 12px 0 0 12px;
+        }
+
+        .brick-title {
+            font-family: 'Noto Serif Bengali', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--biddan-crimson);
+            margin-bottom: 6px;
+            padding-left: 4px;
+        }
+
+        .brick-desc {
+            font-size: 14px;
             color: var(--text-muted);
+            line-height: 1.5;
+            padding-left: 4px;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .brick-footer {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-soft);
+        }
+
+        .btn-delete-cat {
+            color: #A32828;
+            font-size: 13px;
+            font-weight: 600;
             text-decoration: none;
-            padding: 6px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            font-size: 13px;
-            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
         }
 
-        .btn-delete:hover {
-            background-color: var(--biddan-red);
-            color: var(--biddan-white);
-            border-color: var(--biddan-red);
+        .btn-delete-cat:hover {
+            background-color: rgba(163, 40, 40, 0.1);
+            color: #741010;
         }
 
-        .empty-state {
+        /* ফাঁকা অবস্থা */
+        .empty-shelf {
+            grid-column: 1 / -1;
+            background: var(--biddan-parchment);
+            border-radius: 14px;
+            border: 2px dashed var(--border-soft);
+            padding: 50px 20px;
             text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
         }
-        .empty-state i { font-size: 40px; color: var(--border-color); margin-bottom: 10px; }
+        .empty-shelf i { font-size: 42px; color: #DACDBE; margin-bottom: 12px; }
+        .empty-shelf p { color: var(--text-muted); font-size: 15px; }
     </style>
 </head>
 <body>
 
-<!-- Cultural Accent Line -->
-<div class="top-strip"></div>
+<div class="cultural-strip"></div>
 
-<!-- Navigation Header -->
 <header>
-    <a th:href="@{/books}" class="brand">
-        <i class="fa-solid fa-book-open-reader"></i>
-        <h1>বিদ্যান</h1>
+    <a th:href="@{/books}" class="brand-container">
+        <div class="brand-crest">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="brand-text">
+            <h1>বিদ্যান</h1>
+            <span>জ্ঞানতীর্থ পাঠাগার</span>
+        </div>
     </a>
     <nav>
         <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
-        <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
+        <a th:href="@{/categories}" class="active"><i class="fa-solid fa-layer-group"></i> Categories</a>
         <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
         <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
         <a th:href="@{/users}"><i class="fa-solid fa-users"></i> Users</a>
@@ -276,11 +434,15 @@
 </header>
 
 <main>
-    <div class="page-header">
-        <h2><i class="fa-solid fa-layer-group"></i> Category Management</h2>
+    <!-- অনুপ্রেরণামূলক ব্যানার -->
+    <div class="hero-banner">
+        <div class="hero-content">
+            <h2><i class="fa-solid fa-shapes"></i> জ্ঞানশাখা ও বিষয়শ্রেণী</h2>
+            <p>গ্রন্থসম্ভারের সঠিক বিন্যাস পাঠের পথকে সুগম করে। বিষয়ভিত্তিক বিভাজনের মাধ্যমে লাইব্রেরির প্রতিটি বইকে পৌঁছে দিন সঠিক পাঠকের কাছে।</p>
+        </div>
     </div>
 
-    <!-- Flash Messages -->
+    <!-- নোটিফিকেশন অ্যালার্ট -->
     <div th:if="${successMessage}" class="alert alert-success">
         <i class="fa-solid fa-circle-check"></i>
         <span th:text="${successMessage}"></span>
@@ -290,78 +452,70 @@
         <span th:text="${errorMessage}"></span>
     </div>
 
-    <div class="content-grid">
-        <!-- Add Category Form Card -->
-        <div class="card">
-            <h3><i class="fa-solid fa-plus-circle"></i> Notun Category Jog Korun</h3>
+    <div class="layout-grid">
+        <!-- বিষয়শ্রেণী সংযোজন ফর্ম -->
+        <div class="biddan-card">
+            <div class="card-header-line">
+                <h3><i class="fa-solid fa-folder-plus"></i> নতুন বিষয়শ্রেণী</h3>
+            </div>
+            
             <form th:action="@{/categories/save}" th:object="${categoryDto}" method="post">
                 <input type="hidden" th:field="*{id}" />
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-tag"></i> Category Name:</label>
-                    <input type="text" class="form-control" th:field="*{name}" placeholder="Category nam likhun..." />
-                    <span class="error-text" th:if="${#fields.hasErrors('name')}">
+                    <label><i class="fa-solid fa-feather"></i> বিষয়ের নাম (Category Name):</label>
+                    <input type="text" class="form-input" th:field="*{name}" placeholder="যেমন: দর্শন ও সাহিত্য..." />
+                    <span class="error-msg" th:if="${#fields.hasErrors('name')}">
                         <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{name}"></span>
                     </span>
                 </div>
 
                 <div class="form-group">
-                    <label><i class="fa-solid fa-align-left"></i> Description:</label>
-                    <textarea class="form-control" th:field="*{description}" rows="3" placeholder="Category-er biboron..."></textarea>
-                    <span class="error-text" th:if="${#fields.hasErrors('description')}">
+                    <label><i class="fa-solid fa-align-left"></i> বিষয়ের বিবরণ (Description):</label>
+                    <textarea class="form-input" th:field="*{description}" placeholder="এই বিষয়ের সংক্ষিপ্ত পরিচয় লিপিবদ্ধ করুন..."></textarea>
+                    <span class="error-msg" th:if="${#fields.hasErrors('description')}">
                         <i class="fa-solid fa-circle-exclamation"></i> <span th:errors="*{description}"></span>
                     </span>
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-floppy-disk"></i> Save Category
+                <button type="submit" class="btn-submit-gold">
+                    <i class="fa-solid fa-bookmark"></i> সংরক্ষণ করুন
                 </button>
             </form>
         </div>
 
-        <!-- Categories Table Card -->
-        <div class="card">
-            <h3><i class="fa-solid fa-list"></i> Category List</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th style="text-align: right;">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:if="${#lists.isEmpty(categories)}">
-                        <td colspan="3">
-                            <div class="empty-state">
-                                <i class="fa-solid fa-folder-open"></i>
-                                <p>Kono category paowa jayni.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr th:each="cat : ${categories}">
-                        <td>
-                            <span class="cat-name" th:text="${cat.name}">Software Engineering</span>
-                        </td>
-                        <td>
-                            <span class="cat-desc" th:text="${cat.description}">Programming related books</span>
-                        </td>
-                        <td style="text-align: right;">
-                            <a class="btn-delete" th:href="@{/categories/delete/{id}(id=${cat.id})}"
-                               onclick="return confirm('Apni ki ei category-ti muche felte chan?');">
-                                <i class="fa-solid fa-trash-can"></i> Delete
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+        <!-- বিষয়শ্রেণীর তালিকা (আভিজাত্যপূর্ণ কার্ড গ্রিড) -->
+        <div class="biddan-card">
+            <div class="card-header-line">
+                <h3><i class="fa-solid fa-books"></i> সংরক্ষিত বিষয়সমূহ</h3>
+                <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;" th:text="${categories.size()} + ' টি শাখা'"></span>
+            </div>
+
+            <div class="category-items-grid">
+                <!-- ফাঁকা অবস্থা -->
+                <div th:if="${#lists.isEmpty(categories)}" class="empty-shelf">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <p>কোনো বিষয়শ্রেণী তৈরি করা হয়নি। বাঁ পাশের ফর্ম থেকে নতুন বিষয় যোগ করুন।</p>
+                </div>
+
+                <!-- প্রতিটি ক্যাটাগরি কার্ড -->
+                <div class="category-brick" th:each="cat : ${categories}">
+                    <div class="brick-spine"></div>
+                    <h4 class="brick-title" th:text="${cat.name}">Software Engineering</h4>
+                    <p class="brick-desc" th:text="${cat.description != null && !cat.description.isEmpty() ? cat.description : 'কোনো বিবরণ যোগ করা হয়নি।'}">Programming related books</p>
+                    
+                    <div class="brick-footer">
+                        <a class="btn-delete-cat" th:href="@{/categories/delete/{id}(id=${cat.id})}"
+                           onclick="return confirm('আপনি কি এই বিষয়শ্রেণীটি মুছে ফেলতে চান?');">
+                            <i class="fa-solid fa-trash-can"></i> অপসারণ
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </main>
 
-<!-- Vanilla JavaScript for Auto-hiding Alerts -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const alerts = document.querySelectorAll('.alert');
