@@ -3,89 +3,348 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management - Borrow Records</title>
+    <title>বিদ্যান | ধার নেওয়া বইয়ের তালিকা</title>
+    
+    <!-- Google Fonts: Hind Siliguri -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --biddan-red: #B22222;
+            --biddan-dark: #8B0000;
+            --biddan-white: #FFFFFF;
+            --biddan-bg: #FCFAFA;
+            --text-dark: #2C2A2A;
+            --text-muted: #6B6363;
+            --border-color: #EFE8E8;
+            --shadow-soft: 0 4px 20px rgba(178, 34, 34, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--biddan-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Bar Gradient & Navbar */
+        .top-strip { height: 5px; background: linear-gradient(90deg, var(--biddan-dark), var(--biddan-red)); }
+        
+        header {
+            background-color: var(--biddan-white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .brand i { font-size: 28px; color: var(--biddan-red); }
+        .brand h1 { font-size: 24px; color: var(--biddan-dark); font-weight: 700; letter-spacing: 1px; }
+
+        nav { display: flex; gap: 8px; }
+        nav a {
+            text-decoration: none; color: var(--text-dark); font-weight: 500; font-size: 16px;
+            padding: 8px 15px; border-radius: 6px; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px;
+        }
+        nav a i { color: var(--text-muted); transition: color 0.3s ease; }
+        nav a:hover { background-color: rgba(178, 34, 34, 0.08); color: var(--biddan-red); }
+        nav a:hover i { color: var(--biddan-red); }
+
+        /* Main Container */
+        main {
+            max-width: 1200px;
+            width: 100%;
+            margin: 40px auto;
+            padding: 0 20px;
+            flex-grow: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: var(--biddan-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, var(--biddan-red), var(--biddan-dark));
+            color: var(--biddan-white);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(178, 34, 34, 0.2);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(178, 34, 34, 0.3);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .alert-success { background-color: #F0FDF4; color: #166534; border-left: 4px solid #22C55E; }
+        .alert-error { background-color: #FEF2F2; color: #991B1B; border-left: 4px solid var(--biddan-red); }
+
+        /* Table Design */
+        .table-container {
+            background: var(--biddan-white);
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead { background-color: #FFF5F5; border-bottom: 2px solid var(--biddan-red); }
+        th { text-align: left; padding: 18px 15px; color: var(--biddan-dark); font-weight: 700; font-size: 15px; }
+        td { padding: 16px 15px; border-bottom: 1px solid var(--border-color); color: var(--text-dark); vertical-align: middle; }
+        tbody tr { transition: background-color 0.2s ease; }
+        tbody tr:hover { background-color: rgba(178, 34, 34, 0.03); }
+
+        /* Typography & Elements in Table */
+        .primary-text { font-weight: 700; color: var(--biddan-dark); font-size: 16px; display: block; }
+        .secondary-text { font-size: 13px; color: var(--text-muted); display: block; margin-top: 2px; }
+        
+        .date-text { font-family: monospace; font-size: 14px; color: #4B5563; }
+        .date-missing { color: #9CA3AF; font-size: 13px; font-style: italic; }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-borrowed {
+            background-color: #FFF7ED;
+            color: #C2410C;
+            border: 1px solid #FFEDD5;
+        }
+
+        .badge-returned {
+            background-color: #F0FDF4;
+            color: #15803D;
+            border: 1px solid #DCFCE7;
+        }
+
+        /* Action Buttons */
+        .btn-return {
+            background-color: var(--biddan-white);
+            color: var(--biddan-red);
+            border: 1px solid var(--biddan-red);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-return:hover {
+            background-color: var(--biddan-red);
+            color: var(--biddan-white);
+        }
+
+        .status-completed {
+            color: #15803D;
+            font-size: 14px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 48px;
+            color: var(--border-color);
+            margin-bottom: 15px;
+        }
+
+    </style>
 </head>
 <body>
 
+<!-- Cultural Accent Line -->
+<div class="top-strip"></div>
+
+<!-- Navigation Header -->
 <header>
+    <a th:href="@{/books}" class="brand">
+        <i class="fa-solid fa-book-open-reader"></i>
+        <h1>বিদ্যান</h1>
+    </a>
     <nav>
-        <a th:href="@{/books}">Books</a> |
-        <a th:href="@{/categories}">Categories</a> |
-        <a th:href="@{/borrows}">Borrow Records</a> |
-        <a th:href="@{/borrows/issue}">Issue Book</a> |
-        <a th:href="@{/users}">Users</a> |
-        <a th:href="@{/users/register}">Register</a>
+        <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
+        <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
+        <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
+        <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
+        <a th:href="@{/users}"><i class="fa-solid fa-users"></i> Users</a>
+        <a th:href="@{/users/register}"><i class="fa-solid fa-user-plus"></i> Register</a>
     </nav>
 </header>
 
 <main>
-    <h2>Borrow Records (Dhar Neowa Boiyer Talika)</h2>
+    <div class="page-header">
+        <h2><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records (Dhar Neowa Boiyer Talika)</h2>
+        <a th:href="@{/borrows/issue}" class="btn-add">
+            <i class="fa-solid fa-plus"></i> Notun Boi Issue Korun
+        </a>
+    </div>
 
     <!-- Flash Messages -->
-    <div th:if="${successMessage}">
-        <p style="color: green;" th:text="${successMessage}"></p>
+    <div th:if="${successMessage}" class="alert alert-success">
+        <i class="fa-solid fa-circle-check"></i>
+        <span th:text="${successMessage}"></span>
     </div>
-    <div th:if="${errorMessage}">
-        <p style="color: red;" th:text="${errorMessage}"></p>
+    <div th:if="${errorMessage}" class="alert alert-error">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span th:text="${errorMessage}"></span>
     </div>
-
-    <div>
-        <a th:href="@{/borrows/issue}">+ Notun Boi Issue Korun</a>
-    </div>
-
-    <br>
 
     <!-- Borrow Records Table -->
-    <table border="1" cellpadding="8" cellspacing="0">
-        <thead>
-        <tr>
-            <th>User</th>
-            <th>Book</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Return Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${#lists.isEmpty(records)}">
-            <td colspan="7">Kono dharer record paowa jayni.</td>
-        </tr>
-        <tr th:each="rec : ${records}">
-            <td>
-                <strong th:text="${rec.userName}">Rakibul</strong><br>
-                <small th:text="${rec.userEmail}">rakib@mail.com</small>
-            </td>
-            <td>
-                <strong th:text="${rec.bookTitle}">Clean Architecture</strong><br>
-                <small>ISBN: <span th:text="${rec.bookIsbn}">978...</span></small>
-            </td>
-            <td th:text="${rec.borrowDate}">2026-09-23</td>
-            <td th:text="${rec.dueDate}">2026-10-07</td>
-            <td>
-                <span th:if="${rec.returnDate != null}" th:text="${rec.returnDate}">2026-09-25</span>
-                <span th:if="${rec.returnDate == null}" style="color: gray;">Not Returned</span>
-            </td>
-            <td>
-                <span th:text="${rec.status}">BORROWED</span>
-            </td>
-            <td>
-                <!-- Only show Return button if status is BORROWED -->
-                <form th:if="${rec.status.name() == 'BORROWED'}"
-                      th:action="@{/borrows/return/{id}(id=${rec.id})}"
-                      method="post"
-                      style="display:inline;">
-                    <button type="submit" onclick="return confirm('Boi ferot hishebe mark korte chan?');">
-                        Return Book
-                    </button>
-                </form>
-                <span th:if="${rec.status.name() == 'RETURNED'}" style="color: green;">Completed</span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>User</th>
+                <th>Book</th>
+                <th>Borrow Date</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+                <th style="text-align: center;">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(records)}">
+                <td colspan="7">
+                    <div class="empty-state">
+                        <i class="fa-solid fa-box-open"></i>
+                        <p>Kono dharer record paowa jayni.</p>
+                    </div>
+                </td>
+            </tr>
+            <tr th:each="rec : ${records}">
+                <td>
+                    <span class="primary-text" th:text="${rec.userName}">Rakibul</span>
+                    <span class="secondary-text"><i class="fa-regular fa-envelope"></i> <span th:text="${rec.userEmail}">rakib@mail.com</span></span>
+                </td>
+                <td>
+                    <span class="primary-text" th:text="${rec.bookTitle}">Clean Architecture</span>
+                    <span class="secondary-text"><i class="fa-solid fa-barcode"></i> ISBN: <span th:text="${rec.bookIsbn}">978...</span></span>
+                </td>
+                <td>
+                    <span class="date-text" th:text="${rec.borrowDate}">2026-09-23</span>
+                </td>
+                <td>
+                    <span class="date-text" th:text="${rec.dueDate}">2026-10-07</span>
+                </td>
+                <td>
+                    <span class="date-text" th:if="${rec.returnDate != null}" th:text="${rec.returnDate}">2026-09-25</span>
+                    <span class="date-missing" th:if="${rec.returnDate == null}"><i class="fa-solid fa-minus"></i> Not Returned</span>
+                </td>
+                <td>
+                    <!-- Conditional Badges -->
+                    <span class="status-badge badge-borrowed" th:if="${rec.status.name() == 'BORROWED'}">
+                        <i class="fa-regular fa-clock"></i> BORROWED
+                    </span>
+                    <span class="status-badge badge-returned" th:if="${rec.status.name() == 'RETURNED'}">
+                        <i class="fa-solid fa-check-double"></i> RETURNED
+                    </span>
+                </td>
+                <td style="text-align: center;">
+                    <!-- Only show Return button if status is BORROWED -->
+                    <form th:if="${rec.status.name() == 'BORROWED'}"
+                          th:action="@{/borrows/return/{id}(id=${rec.id})}"
+                          method="post"
+                          style="display:inline;">
+                        <button class="btn-return" type="submit" onclick="return confirm('Boi ferot hishebe mark korte chan?');">
+                            <i class="fa-solid fa-rotate-left"></i> Return
+                        </button>
+                    </form>
+                    
+                    <span class="status-completed" th:if="${rec.status.name() == 'RETURNED'}">
+                        <i class="fa-solid fa-check"></i> Completed
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
+
+<!-- Vanilla JavaScript for Auto-hiding Alerts -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                alert.style.opacity = '0';
+                alert.style.transform = 'translateY(-10px)';
+                setTimeout(() => alert.remove(), 600);
+            }, 4000);
+        });
+    });
+</script>
 
 </body>
 </html>
