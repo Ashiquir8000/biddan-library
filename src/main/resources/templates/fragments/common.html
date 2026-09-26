@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="biddanHead(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title th:text="${pageTitle}">বিদ্যান</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Noto+Serif+Bengali:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* === BIDDAN GLOBAL DESIGN & BULLETPROOF RESPONSIVE === */
+        :root {
+            --biddan-crimson: #801313;
+            --biddan-terracotta: #A32828;
+            --biddan-gold: #D4AF37;
+            --biddan-parchment: #FBF8F3;
+            --card-surface: #FFFFFF;
+            --text-main: #241E1E;
+            --text-muted: #6E6666;
+            --border-soft: #EFE6D8;
+        }
+
+        html, body {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--biddan-parchment);
+            color: var(--text-main);
+            font-family: 'Hind Siliguri', sans-serif;
+            background-image: radial-gradient(#E8DFD0 0.75px, transparent 0.75px);
+            background-size: 20px 20px;
+        }
+
+        *, *:before, *:after { box-sizing: inherit; }
+
+        .cultural-strip {
+            height: 6px;
+            background: linear-gradient(90deg, #4A0505, var(--biddan-crimson), var(--biddan-gold), var(--biddan-crimson), #4A0505);
+            width: 100%;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 12px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* মোবাইল স্ক্রিনের জন্য অবধারিত অটো-ফিক্স (৭টা পেজের সবগুলোতেই কার্যকর হবে) */
+        @media (max-width: 820px) {
+            header {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                padding: 12px 14px !important;
+                gap: 12px !important;
+            }
+
+            .brand, .brand-container {
+                justify-content: center !important;
+            }
+
+            nav {
+                display: flex !important;
+                overflow-x: auto !important;
+                white-space: nowrap !important;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px !important;
+                scrollbar-width: none;
+            }
+            nav::-webkit-scrollbar { display: none; }
+
+            nav a {
+                flex: 0 0 auto !important;
+                padding: 6px 12px !important;
+                font-size: 13px !important;
+            }
+
+            main {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 16px !important;
+                margin: 20px auto !important;
+            }
+
+            /* হিরো ব্যানার এবং ফ্লেক্স হেডার রেসপনসিভ */
+            .hero-banner, .page-header {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                padding: 24px 18px !important;
+                gap: 16px !important;
+                text-align: center !important;
+            }
+
+            .hero-content h2, .page-header h2 {
+                font-size: 20px !important;
+                justify-content: center !important;
+            }
+
+            .btn-add, .btn-add-primary, .btn-issue-primary {
+                width: 100% !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+
+            /* সব গ্রিড এক কলামে ড্রপ করবে */
+            .book-shelf-grid, .record-grid, .category-items-grid, .layout-grid {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
+            }
+
+            .table-container {
+                width: 100% !important;
+                overflow-x: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    </style>
+</head>
