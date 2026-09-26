@@ -1,0 +1,95 @@
+/* ==========================================
+   Biddan Global Mobile Responsive Fix
+   ========================================== */
+html, body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    margin: 0;
+    padding: 0;
+}
+
+@media (max-width: 768px) {
+    /* ১. নেভিগেশন বার হরিজন্টাল টাচ স্ক্রল */
+    header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px !important;
+        padding: 12px 16px !important;
+    }
+
+    .brand-container, .brand {
+        justify-content: center !important;
+    }
+
+    nav {
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+        justify-content: flex-start !important;
+        padding: 6px !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    nav a {
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* ২. মেইন কন্টেইনার */
+    main {
+        padding: 0 16px !important;
+        margin: 20px auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ৩. হিরো ব্যানার সোজা নিচে নামানো */
+    .hero-banner, .page-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 24px 20px !important;
+        gap: 16px !important;
+        text-align: center !important;
+    }
+
+    .hero-content h2, .page-header h2 {
+        font-size: 20px !important;
+        justify-content: center !important;
+    }
+
+    .btn-add-primary, .btn-issue-primary, .btn-add {
+        width: 100% !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+    }
+
+    /* ৪. সমস্ত গ্রিড ও লেআউট ১ কলামে আনা */
+    .book-shelf-grid, .record-grid, .category-items-grid,
+    .content-grid, .layout-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+
+    /* ৫. টেবিল যাতে স্ক্রিনের ডানে না কাটে */
+    .table-container {
+        width: 100% !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* ৬. টাইমলাইন বক্স ফিক্স */
+    .timeline-box {
+        grid-template-columns: 1fr !important;
+        gap: 8px !important;
+        text-align: left !important;
+    }
+    .timeline-col {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+}
