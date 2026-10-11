@@ -463,8 +463,66 @@
             font-size: 17px;
             font-weight: 600;
         }
+
+        /* ==========================================================================
+           RESPONSIVE BREAKPOINTS (Tablet 768-1024px, Mobile 320-480px)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            header { padding: 14px 24px; }
+            main { padding: 0 20px; margin: 28px auto; }
+            .hero-banner { padding: 28px 24px; }
+            .record-grid { grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 14px;
+                gap: 12px;
+            }
+            .brand-container { justify-content: center; }
+            nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 4px;
+                gap: 6px;
+                scrollbar-width: none;
+            }
+            nav::-webkit-scrollbar { display: none; }
+            nav a {
+                flex: 0 0 auto;
+                padding: 7px 12px;
+                font-size: 13px;
+            }
+            main { padding: 0 14px; margin: 16px auto; }
+            .hero-banner {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 22px 16px;
+                gap: 16px;
+                text-align: center;
+            }
+            .hero-content h2 { font-size: 20px; justify-content: center; }
+            .btn-issue-primary { width: 100%; justify-content: center; text-align: center; }
+            .record-grid { grid-template-columns: 1fr; gap: 16px; }
+            .timeline-box { grid-template-columns: 1fr; gap: 8px; }
+            .timeline-col { flex-direction: row; justify-content: space-between; align-items: center; }
+            .card-action-bar { justify-content: stretch; }
+            .btn-return-book { width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .brand-text h1 { font-size: 20px; }
+            .brand-crest { width: 38px; height: 38px; font-size: 18px; }
+            .hero-banner { padding: 18px 14px; }
+            .hero-content h2 { font-size: 18px; }
+            .record-card { padding: 16px 14px 16px 20px; }
+            .record-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .status-pill { align-self: flex-start; }
+        }
     </style>
-    <link rel="stylesheet" th:href="@{/css/responsive.css}">
 </head>
 <body>
 
