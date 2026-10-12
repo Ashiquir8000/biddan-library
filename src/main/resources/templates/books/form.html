@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থতালিকা')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -277,7 +277,7 @@
 <div class="top-strip"></div>
 
 <!-- Navigation Header -->
-<header>
+<header th:replace="~{fragments/common :: biddanHeader('books')}">
     <a th:href="@{/books}" class="brand">
         <i class="fa-solid fa-book-open-reader"></i>
         <h1>বিদ্যান</h1>

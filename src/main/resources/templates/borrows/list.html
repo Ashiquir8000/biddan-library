@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থতালিকা')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -529,7 +529,7 @@
 <div class="cultural-strip"></div>
 
 <!-- Header Navigation -->
-<header>
+<header th:replace="~{fragments/common :: biddanHeader(${isMyHistory} ? 'my-history' : 'borrows')}">
     <a th:href="@{/books}" class="brand-container">
         <div class="brand-crest">
             <i class="fa-solid fa-book-open"></i>
@@ -553,10 +553,12 @@
     <!-- Hero Banner -->
     <div class="hero-banner">
         <div class="hero-content">
-            <h2><i class="fa-solid fa-clock-rotate-left"></i> গ্রন্থ ধার বিবরণী খতিয়ান</h2>
-            <p>পাঠকদের মধ্যে বই বিতরণের খতিয়ান ও হিসাব। সময়মতো গ্রন্থ প্রত্যাবর্তন নিশ্চিত করুন এবং জ্ঞানের প্রবাহ অব্যাহত রাখুন।</p>
+            <h2 th:if="${isMyHistory}"><i class="fa-solid fa-clock-rotate-left"></i> আমার বই ধারের বিবরণী (My History)</h2>
+            <h2 th:unless="${isMyHistory}"><i class="fa-solid fa-clock-rotate-left"></i> গ্রন্থ ধার বিবরণী খতিয়ান</h2>
+            <p th:if="${isMyHistory}">আপনার ধারকৃত বইয়ের তালিকা এবং ফেরতের সময়সীমা ট্র্যাক করুন।</p>
+            <p th:unless="${isMyHistory}">পাঠকদের মধ্যে বই বিতরণের খতিয়ান ও হিসাব। সময়মতো গ্রন্থ প্রত্যাবর্তন নিশ্চিত করুন এবং জ্ঞানের প্রবাহ অব্যাহত রাখুন।</p>
         </div>
-        <a th:href="@{/borrows/issue}" class="btn-issue-primary">
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/borrows/issue}" class="btn-issue-primary">
             <i class="fa-solid fa-plus-circle"></i> নতুন গ্রন্থ বিতরণ
         </a>
     </div>
@@ -572,7 +574,8 @@
     </div>
 
     <div class="shelf-indicator">
-        <h3><i class="fa-solid fa-receipt"></i> সাম্প্রতিক বিতরণ তালিকা</h3>
+        <h3 th:if="${isMyHistory}"><i class="fa-solid fa-receipt"></i> আমার ধারের ইতিহাস</h3>
+        <h3 th:unless="${isMyHistory}"><i class="fa-solid fa-receipt"></i> সাম্প্রতিক বিতরণ তালিকা</h3>
         <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;" th:text="${records.size()} + ' টি বিবরণী নথিবদ্ধ'"></span>
     </div>
 
@@ -628,7 +631,7 @@
             </div>
 
             <div class="card-action-bar">
-                <form th:if="${rec.status.name() == 'BORROWED'}"
+                <form sec:authorize="hasRole('ADMIN')" th:if="${rec.status.name() == 'BORROWED'}"
                       th:action="@{/borrows/return/{id}(id=${rec.id})}"
                       method="post"
                       style="display:inline;">
@@ -639,6 +642,9 @@
 
                 <div class="done-text" th:if="${rec.status.name() == 'RETURNED'}">
                     <i class="fa-solid fa-circle-check"></i> পাঠাগারে সংরক্ষিত
+                </div>
+                <div class="done-text" sec:authorize="!hasRole('ADMIN')" th:if="${rec.status.name() == 'BORROWED'}">
+                    <i class="fa-regular fa-clock"></i> প্রক্রিয়াধীন রয়েছে
                 </div>
             </div>
         </div>

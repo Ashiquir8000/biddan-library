@@ -23,15 +23,16 @@ public class DataLoader implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) {
-        // ১. প্রাথমিক ইউজার তৈরি (যদি আগে থেকে না থাকে)
+        // ১. প্রাথমিক ইউজার তৈরি বা পাসওয়ার্ড বিসিপ করা (যদি আগে থেকে থাকে কিন্তু বিসিপ করা না থাকে)
         if (userRepository.count() == 0) {
             User admin = User.builder()
                     .name("সিস্টেম অ্যাডমিন")
                     .email("admin@library.com")
-                    .password("admin123")
+                    .password(passwordEncoder.encode("admin123"))
                     .role(Role.ROLE_ADMIN)
                     .phone("01711000000")
                     .active(true)
@@ -41,7 +42,7 @@ public class DataLoader implements CommandLineRunner {
             User student = User.builder()
                     .name("রাকিবুল হাসান")
                     .email("rakib@student.com")
-                    .password("user123")
+                    .password(passwordEncoder.encode("user123"))
                     .role(Role.ROLE_USER)
                     .phone("01811000000")
                     .active(true)
@@ -50,6 +51,15 @@ public class DataLoader implements CommandLineRunner {
 
             userRepository.saveAll(List.of(admin, student));
             log.info("ডিফল্ট ইউজার এবং অ্যাডমিন সফলভাবে যুক্ত হয়েছে।");
+        } else {
+            // যদি পূর্বের ব্যবহারকারীদের পাসওয়ার্ড প্লেন টেক্সট থাকে তবে তা বিসিপ দিয়ে আপডেট করা
+            userRepository.findAll().forEach(u -> {
+                if (u.getPassword() != null && !u.getPassword().startsWith("$2a$") && !u.getPassword().startsWith("$2b$")) {
+                    u.setPassword(passwordEncoder.encode(u.getPassword()));
+                    userRepository.save(u);
+                    log.info("ইউজার {} এর পাসওয়ার্ড এনকোড করা হয়েছে।", u.getEmail());
+                }
+            });
         }
 
         // ২. ক্যাটাগরি তৈরি

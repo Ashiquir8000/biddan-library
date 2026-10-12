@@ -15,6 +15,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     public UserResponseDto registerUser(UserRegistrationDto dto) {
         if (userRepository.existsByEmail(dto.email())) {
@@ -24,7 +25,7 @@ public class UserService {
         User user = User.builder()
                 .name(dto.name())
                 .email(dto.email())
-                .password(dto.password())
+                .password(passwordEncoder.encode(dto.password()))
                 .phone(dto.phone())
                 .role(Role.ROLE_USER)
                 .active(true)
@@ -44,6 +45,11 @@ public class UserService {
     public User getUserEntity(String id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ইউজার পাওয়া যায়নি!"));
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("ইউজার পাওয়া যায়নি: " + email));
     }
 
     private UserResponseDto mapToResponse(User user) {

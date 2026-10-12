@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থতালিকা')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -213,6 +213,10 @@
             align-items: start;
         }
 
+        .layout-grid.single-col {
+            grid-template-columns: 1fr;
+        }
+
         @media (max-width: 960px) {
             .layout-grid { grid-template-columns: 1fr; }
         }
@@ -323,18 +327,24 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 18px;
+            width: 100%;
         }
 
         .category-brick {
             background: var(--card-surface);
             border-radius: 12px;
             border: 1px solid var(--border-soft);
-            padding: 18px 20px;
+            padding: 20px 22px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             position: relative;
             transition: all 0.25s ease;
             box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            word-break: break-word;
+            overflow-wrap: break-word;
+            min-width: 0;
+            box-sizing: border-box;
         }
 
         .category-brick:hover {
@@ -348,7 +358,7 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 4px;
+            width: 5px;
             background: linear-gradient(to bottom, var(--biddan-crimson), var(--biddan-gold));
             border-radius: 12px 0 0 12px;
         }
@@ -358,24 +368,30 @@
             font-size: 17px;
             font-weight: 700;
             color: var(--biddan-crimson);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             padding-left: 4px;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.4;
         }
 
         .brick-desc {
             font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
             padding-left: 4px;
             margin-bottom: 16px;
             flex-grow: 1;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .brick-footer {
             display: flex;
             justify-content: flex-end;
-            padding-top: 10px;
+            padding-top: 12px;
             border-top: 1px dashed var(--border-soft);
+            margin-top: auto;
         }
 
         .btn-delete-cat {
@@ -469,7 +485,7 @@
 
 <div class="cultural-strip"></div>
 
-<header>
+<header th:replace="~{fragments/common :: biddanHeader('categories')}">
     <a th:href="@{/books}" class="brand-container">
         <div class="brand-crest">
             <i class="fa-solid fa-book-open"></i>
@@ -508,9 +524,9 @@
         <span th:text="${errorMessage}"></span>
     </div>
 
-    <div class="layout-grid">
-        <!-- বিষয়শ্রেণী সংযোজন ফর্ম -->
-        <div class="biddan-card">
+    <div class="layout-grid" th:classappend="${#authorization.expression('hasRole(''ADMIN'')')} ? '' : 'single-col'">
+        <!-- বিষয়শ্রেণী সংযোজন ফর্ম (Only for ADMIN) -->
+        <div class="biddan-card" sec:authorize="hasRole('ADMIN')">
             <div class="card-header-line">
                 <h3><i class="fa-solid fa-folder-plus"></i> নতুন বিষয়শ্রেণী</h3>
             </div>
@@ -551,7 +567,7 @@
                 <!-- ফাঁকা অবস্থা -->
                 <div th:if="${#lists.isEmpty(categories)}" class="empty-shelf">
                     <i class="fa-solid fa-folder-open"></i>
-                    <p>কোনো বিষয়শ্রেণী তৈরি করা হয়নি। বাঁ পাশের ফর্ম থেকে নতুন বিষয় যোগ করুন।</p>
+                    <p>কোনো বিষয়শ্রেণী তৈরি করা হয়নি।</p>
                 </div>
 
                 <!-- প্রতিটি ক্যাটাগরি কার্ড -->
@@ -560,7 +576,7 @@
                     <h4 class="brick-title" th:text="${cat.name}">Software Engineering</h4>
                     <p class="brick-desc" th:text="${cat.description != null && !cat.description.isEmpty() ? cat.description : 'কোনো বিবরণ যোগ করা হয়নি।'}">Programming related books</p>
                     
-                    <div class="brick-footer">
+                    <div class="brick-footer" sec:authorize="hasRole('ADMIN')">
                         <a class="btn-delete-cat" th:href="@{/categories/delete/{id}(id=${cat.id})}"
                            onclick="return confirm('আপনি কি এই বিষয়শ্রেণীটি মুছে ফেলতে চান?');">
                             <i class="fa-solid fa-trash-can"></i> অপসারণ

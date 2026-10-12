@@ -88,6 +88,14 @@ public class BorrowService {
                 .toList();
     }
 
+    public List<BorrowRecordResponseDto> getRecordsByUser(String email) {
+        User user = userService.getUserByEmail(email);
+        return borrowRecordRepository.findByUser(user)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
     private BorrowRecordResponseDto mapToDto(BorrowRecord record) {
         return new BorrowRecordResponseDto(
                 record.getId(),

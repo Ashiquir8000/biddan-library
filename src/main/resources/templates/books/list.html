@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থতালিকা')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -451,7 +451,7 @@
 
 <div class="cultural-strip"></div>
 
-<header>
+<header th:replace="~{fragments/common :: biddanHeader('books')}">
     <a th:href="@{/books}" class="brand-container">
         <div class="brand-crest">
             <i class="fa-solid fa-book-open"></i>
@@ -478,7 +478,7 @@
             <h2><i class="fa-solid fa-feather-pointed"></i> সংরক্ষিত গ্রন্থসম্ভার</h2>
             <p>জ্ঞানের প্রদীপে উদ্ভাসিত হোক প্রতিটি মন। পাঠাগারের প্রতিটি গ্রন্থ এক একটি অনন্ত যাত্রার সূচনা।</p>
         </div>
-        <a th:href="@{/books/new}" class="btn-add-primary">
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/books/new}" class="btn-add-primary">
             <i class="fa-solid fa-circle-plus"></i> Notun Boi Jog Korun
         </a>
     </div>
@@ -527,7 +527,7 @@
                 </div>
             </div>
 
-            <div class="card-actions">
+            <div class="card-actions" sec:authorize="hasRole('ADMIN')">
                 <a class="btn-delete-subtle" 
                    th:href="@{/books/delete/{id}(id=${book.id})}" 
                    onclick="return confirm('Apni ki ei boiti muche felte chan?');">

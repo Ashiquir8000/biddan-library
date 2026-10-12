@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থতালিকা')}">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/common :: biddanHead('বিদ্যান | গ্রন্থ বিতরণ')}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>বিদ্যান | গ্রন্থ বিতরণ</title>
@@ -271,20 +271,7 @@
 <div class="top-strip"></div>
 
 <!-- Navigation Header -->
-<header>
-    <a th:href="@{/books}" class="brand">
-        <i class="fa-solid fa-book-open-reader"></i>
-        <h1>বিদ্যান</h1>
-    </a>
-    <nav>
-        <a th:href="@{/books}"><i class="fa-solid fa-swatchbook"></i> Books</a>
-        <a th:href="@{/categories}"><i class="fa-solid fa-layer-group"></i> Categories</a>
-        <a th:href="@{/borrows}"><i class="fa-solid fa-clock-rotate-left"></i> Borrow Records</a>
-        <a th:href="@{/borrows/issue}"><i class="fa-solid fa-hand-holding-hand"></i> Issue Book</a>
-        <a th:href="@{/users}"><i class="fa-solid fa-users"></i> Users</a>
-        <a th:href="@{/users/register}"><i class="fa-solid fa-user-plus"></i> Register</a>
-    </nav>
-</header>
+<header th:replace="~{fragments/common :: biddanHeader('borrows')}"></header>
 
 <main>
     <div class="page-header">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn" xmlns:th="http://www.thymeleaf.org">
+<html lang="bn" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="biddanHead(pageTitle)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -903,5 +903,63 @@
     </style>
 </head>
 <body>
+
+<!-- Global Navigation Header Fragment -->
+<header th:fragment="biddanHeader(activeTab)">
+    <a th:href="@{/books}" class="brand-container">
+        <div class="brand-crest">
+            <i class="fa-solid fa-book-open"></i>
+        </div>
+        <div class="brand-text">
+            <h1>বিদ্যান</h1>
+            <span>জ্ঞানতীর্থ পাঠাগার</span>
+        </div>
+    </a>
+    <nav>
+        <!-- Public Links (Always visible) -->
+        <a th:href="@{/books}" th:classappend="${activeTab == 'books'} ? 'active' : ''">
+            <i class="fa-solid fa-swatchbook"></i> Books
+        </a>
+        <a th:href="@{/categories}" th:classappend="${activeTab == 'categories'} ? 'active' : ''">
+            <i class="fa-solid fa-layer-group"></i> Categories
+        </a>
+
+        <!-- Admin Links -->
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/borrows}" th:classappend="${activeTab == 'borrows'} ? 'active' : ''">
+            <i class="fa-solid fa-clock-rotate-left"></i> Borrow Records
+        </a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/borrows/issue}" th:classappend="${activeTab == 'issue'} ? 'active' : ''">
+            <i class="fa-solid fa-hand-holding-hand"></i> Issue Book
+        </a>
+        <a sec:authorize="hasRole('ADMIN')" th:href="@{/users}" th:classappend="${activeTab == 'users'} ? 'active' : ''">
+            <i class="fa-solid fa-users"></i> Users
+        </a>
+
+        <!-- Authenticated User (Member) Links -->
+        <a sec:authorize="isAuthenticated()" th:href="@{/borrows/my-history}" th:classappend="${activeTab == 'my-history'} ? 'active' : ''">
+            <i class="fa-solid fa-clock-rotate-left"></i> My History
+        </a>
+
+        <!-- Guest Links: Login & Register -->
+        <a sec:authorize="isAnonymous()" th:href="@{/login}" th:classappend="${activeTab == 'login'} ? 'active' : ''" style="color: var(--biddan-crimson); font-weight: 600;">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+        </a>
+        <a sec:authorize="isAnonymous()" th:href="@{/users/register}" th:classappend="${activeTab == 'register'} ? 'active' : ''">
+            <i class="fa-solid fa-user-plus"></i> Register
+        </a>
+
+        <!-- Logged-in User Information & Logout -->
+        <span sec:authorize="isAuthenticated()" style="font-size: 13px; color: var(--text-muted); padding: 0 4px; display: inline-flex; align-items: center; gap: 4px;">
+            <i class="fa-solid fa-circle-user" style="color: var(--biddan-crimson);"></i>
+            <span sec:authentication="name" style="max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></span>
+        </span>
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post" style="display: inline; margin: 0;">
+            <button type="submit" style="background: none; border: none; cursor: pointer; color: #A32828; font-family: inherit; font-size: 14px; font-weight: 600; padding: 7px 12px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; transition: background 0.2s;">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </form>
+    </nav>
+</header>
+
 </body>
 </html>

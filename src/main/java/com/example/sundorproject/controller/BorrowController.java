@@ -29,6 +29,16 @@ public class BorrowController {
         return "borrows/list";
     }
 
+    @GetMapping("/my-history")
+    public String myBorrowHistory(Model model, java.security.Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("records", borrowService.getRecordsByUser(principal.getName()));
+        model.addAttribute("isMyHistory", true);
+        return "borrows/list";
+    }
+
     @GetMapping("/issue")
     public String showIssueForm(Model model) {
         model.addAttribute("borrowDto", new BorrowRequestDto("", "", LocalDate.now().plusDays(14)));
